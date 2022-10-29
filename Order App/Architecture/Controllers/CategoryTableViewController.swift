@@ -10,7 +10,6 @@ import UIKit
 @MainActor
 final class CategoryTableViewController: UITableViewController {
 
-    let menuController = MenuController()
     var categories = [String]()
 
     // MARK: - LifeCycle
@@ -20,10 +19,10 @@ final class CategoryTableViewController: UITableViewController {
 
         Task {
             do {
-                let categories = try await menuController.fetchCategories()
+                let categories = try await MenuController.shared.fetchCategories()
                 updateUI(with: categories)
             } catch {
-                displayError(error, title: "Failed to Fetch Categories")
+                displayError(error, title: "Failed to Fetch Categories for \(self.categories)")
             }
         }
     }
@@ -82,7 +81,7 @@ final class CategoryTableViewController: UITableViewController {
     // MARK: - Navigation
 
     @IBSegueAction func showMenu(_ coder: NSCoder, sender: Any?) -> MenuTableViewController? {
-        guard
+    guard
            let cell = sender as? UITableViewCell,
            let indexPath = tableView.indexPath(for: cell)
         else { return nil }

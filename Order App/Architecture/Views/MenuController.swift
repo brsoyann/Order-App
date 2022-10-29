@@ -8,6 +8,8 @@
 import Foundation
 
 final class MenuController {
+
+    static let shared = MenuController()
     let baseURL = URL(string: "http://localhost:8080/")
 
     func fetchCategories() async throws -> [String] {
@@ -76,6 +78,16 @@ final class MenuController {
 
         return orderResponse.prepTime
     }
+
+    // MARK: - Order
+
+    var order = Order() {
+        didSet{
+            NotificationCenter.default.post(name: MenuController.orderUpdatedNotification, object: nil)
+        }
+    }
+
+    static let orderUpdatedNotification = Notification.Name("MenuController.orderUpdated")
 }
 
 enum MenuControllerError: Error, LocalizedError {
