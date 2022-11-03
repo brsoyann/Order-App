@@ -14,6 +14,8 @@ final class MenuTableViewController: UITableViewController {
     var menuItems = [MenuItem]()
     var imageLoadTasks: [IndexPath: Task<Void, Never>] = [:]
 
+    // MARK: - LifeCycle
+
     init?(coder: NSCoder, category: String) {
         self.category = category
         super.init(coder: coder)
@@ -23,7 +25,7 @@ final class MenuTableViewController: UITableViewController {
         fatalError("init(coder:) had not been implemented")
     }
 
-    // MARK: - LifeCycle
+    // MARK: - ViewLifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +49,7 @@ final class MenuTableViewController: UITableViewController {
         }
     }
 
-    // MARK: - Table view data source
+    // MARK: - Table View and Data Source
 
     override func numberOfSections(
         in tableView: UITableView
@@ -105,28 +107,6 @@ final class MenuTableViewController: UITableViewController {
     }
 
     func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
-//        let menuItem = menuItems[indexPath.row]
-//
-//        var content = cell.defaultContentConfiguration()
-//        content.text = menuItem.name
-//        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-//        content.image = UIImage(systemName: "photo.on.rectangle")
-//        cell.contentConfiguration = content
-//
-//        Task {
-//            if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL) {
-//                if let currentIndexPath = self.tableView.indexPath(for: cell),
-//                   currentIndexPath == indexPath {
-//                    var content = cell.defaultContentConfiguration()
-//                    content.text = menuItem.name
-//                    content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-//                    content.image = image
-//                    cell.contentConfiguration = content
-//                }
-//
-//            }
-//
-//        }
 
         guard let cell = cell as? MenuItemCell else { return }
 

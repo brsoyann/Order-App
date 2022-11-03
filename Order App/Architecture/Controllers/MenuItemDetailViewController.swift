@@ -11,6 +11,8 @@ final class MenuItemDetailViewController: UIViewController {
 
     let menuItem: MenuItem
 
+    // MARK: - LifeCycle
+
     init?(coder: NSCoder, menuItem: MenuItem) {
         self.menuItem = menuItem
         super.init(coder: coder)
@@ -20,6 +22,13 @@ final class MenuItemDetailViewController: UIViewController {
         fatalError("init(coder:) had not been implemented")
     }
 
+    // MARK: - ViewLifeCycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateUI()
+    }
+
     // MARK: - Subviews
 
     @IBOutlet var nameLabel: UILabel!
@@ -27,13 +36,6 @@ final class MenuItemDetailViewController: UIViewController {
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var priceLabel: UILabel!
     @IBOutlet var addToOrderButton: UIButton!
-
-    // MARK: - LifeCycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        updateUI()
-    }
 
     // MARK: - CallBacks
 

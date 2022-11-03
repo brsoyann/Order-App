@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Category" textLabel="K1c-1D-s4L" style="IBUITableViewCellStyleDefault" id="Pej-jc-fKn" customClass="MenuItemCell" customModule="Order_App" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Category" textLabel="K1c-1D-s4L" style="IBUITableViewCellStyleDefault" id="Pej-jc-fKn" customClass="Category">
                                 <rect key="frame" x="0.0" y="44.666666030883789" width="390" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Pej-jc-fKn" id="SFN-64-NHD">
@@ -192,7 +192,7 @@
             </objects>
             <point key="canvasLocation" x="584.05797101449275" y="3.3482142857142856"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Resturant-->
         <scene sceneID="cWj-Uc-vJW">
             <objects>
                 <tableViewController id="fuM-nf-xeY" customClass="OrderTableViewController" customModule="Order_App" customModuleProvider="target" sceneMemberID="viewController">
@@ -231,7 +231,7 @@
                             <outlet property="delegate" destination="fuM-nf-xeY" id="ykg-zP-rtj"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="VNR-bL-Q57">
+                    <navigationItem key="navigationItem" title="Resturant" id="VNR-bL-Q57">
                         <barButtonItem key="rightBarButtonItem" title="Submit" id="KdU-WT-qiT">
                             <connections>
                                 <action selector="submitTapped:" destination="fuM-nf-xeY" id="hZP-W2-pOb"/>

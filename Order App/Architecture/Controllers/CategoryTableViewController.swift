@@ -12,7 +12,7 @@ final class CategoryTableViewController: UITableViewController {
 
     var categories = [String]()
 
-    // MARK: - LifeCycle
+    // MARK: - ViewLifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +27,7 @@ final class CategoryTableViewController: UITableViewController {
         }
     }
 
-    // MARK: - Table view data source
+    // MARK: - Table View and Data Source
 
     override func tableView(
         _ tableView: UITableView,
@@ -76,7 +76,6 @@ final class CategoryTableViewController: UITableViewController {
         let category = categories[indexPath.row]
         var content = cell.defaultContentConfiguration()
         content.text = category.capitalized
-        content.image = UIImage(named: category)
         cell.contentConfiguration = content
     }
 }

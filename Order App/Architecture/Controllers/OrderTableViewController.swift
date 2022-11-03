@@ -9,10 +9,10 @@ import UIKit
 
 final class OrderTableViewController: UITableViewController {
 
-    // MARK: - Subviews
-
     var minutesToPrepareOrder = 0
     var imageLoadTasks: [IndexPath: Task<Void, Never>] = [:]
+
+    // MARK: - ViewLifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,13 +31,7 @@ final class OrderTableViewController: UITableViewController {
         )
     }
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(
-        in tableView: UITableView
-    ) -> Int {
-        return 1
-    }
+    // MARK: - Table View and Data Source
 
     override func tableView(
         _ tableView: UITableView,
@@ -109,27 +103,21 @@ final class OrderTableViewController: UITableViewController {
         present(alertController, animated: true, completion: nil)
     }
 
+    @IBAction func unwindToOrderList(segue: UIStoryboardSegue ) {
+        if segue.identifier == "dismissConfirmation" {
+            MenuController.shared.order.menuItems.removeAll()
+        }
+    }
+
     // MARK: - Helpers
 
     func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
         let menuItem = MenuController.shared.order.menuItems[indexPath.row]
 
-        guard let cell = cell as? MenuItemCell else { return }
-
-        cell.itemName = menuItem.name
-        cell.price = menuItem.price
-        cell.image = nil
-
-        imageLoadTasks[indexPath] = Task {
-            if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL) {
-                if
-                    let currentIndexPath = self.tableView.indexPath(for: cell),
-                    currentIndexPath == indexPath {
-                    cell.image = image
-                }
-            }
-            imageLoadTasks[indexPath] = nil
-        }
+        var content = cell.defaultContentConfiguration()
+        content.text = menuItem.name
+        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
+        cell.contentConfiguration = content
     }
 
     func uploadOrder() {
@@ -151,11 +139,5 @@ final class OrderTableViewController: UITableViewController {
         let alert = UIAlertController(title: title, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-    }
-
-    @IBAction func unwindToOrderList(segue: UIStoryboardSegue ) {
-        if segue.identifier == "dismissConfirmation" {
-            MenuController.shared.order.menuItems.removeAll()
-        }
     }
 }

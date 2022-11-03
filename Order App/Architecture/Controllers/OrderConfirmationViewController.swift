@@ -15,6 +15,8 @@ final class OrderConfirmationViewController: UIViewController {
 
     @IBOutlet var confirmationLabel: UILabel!
 
+    // MARK: - LifeCycle
+
     init?(coder: NSCoder, minutesToPrepare: Int) {
         self.minutesToPrepare = minutesToPrepare
         super.init(coder: coder)
@@ -24,13 +26,11 @@ final class OrderConfirmationViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - ViewLifeCycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         confirmationLabel.text = "Thank you for your order, after \(minutesToPrepare) minutes it will be ready"
     }
-
-    // MARK: - Navigation
-
-   
 }
