@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OrderConfirmationViewController: UIViewController {
+final class OrderConfirmationViewController: UIViewController {
 
     let minutesToPrepare: Int
 
@@ -32,9 +32,5 @@ class OrderConfirmationViewController: UIViewController {
 
     // MARK: - Navigation
 
-    @IBAction func unwindToOrderList (segue: UIStoryboardSegue ) {
-        if segue.identifier == "dismissConfirmation" {
-            MenuController.shared.order.menuItems.removeAll()
-        }
-    }
+   
 }

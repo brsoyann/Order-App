@@ -20,7 +20,7 @@ final class MenuItemDetailViewController: UIViewController {
         fatalError("init(coder:) had not been implemented")
     }
 
-    // MARK: - Outlets
+    // MARK: - Subviews
 
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var detailTextLabel: UILabel!
@@ -34,16 +34,6 @@ final class MenuItemDetailViewController: UIViewController {
         super.viewDidLoad()
         updateUI()
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     // MARK: - CallBacks
 
@@ -69,5 +59,11 @@ final class MenuItemDetailViewController: UIViewController {
         nameLabel.text = menuItem.name
         priceLabel.text = menuItem.price.formatted(.currency(code: "usd"))
         detailTextLabel.text = menuItem.detailText
+
+        Task {
+            if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL) {
+                imageView.image = image
+            }
+        }
     }
 }

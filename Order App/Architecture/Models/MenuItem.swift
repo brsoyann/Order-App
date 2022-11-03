@@ -21,6 +21,6 @@ struct MenuItem: Codable {
         case detailText = "description"
         case price
         case category
-         case imageURL = "image_url"
+        case imageURL = "image_url"
     }
 }

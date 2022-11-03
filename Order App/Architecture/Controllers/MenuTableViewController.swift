@@ -12,6 +12,7 @@ final class MenuTableViewController: UITableViewController {
 
     let category: String
     var menuItems = [MenuItem]()
+    var imageLoadTasks: [IndexPath: Task<Void, Never>] = [:]
 
     init?(coder: NSCoder, category: String) {
         self.category = category
@@ -38,20 +39,44 @@ final class MenuTableViewController: UITableViewController {
         }
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        imageLoadTasks.forEach { key, value in
+            value.cancel()
+        }
+    }
+
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(
+        in tableView: UITableView
+    ) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         return menuItems.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuItem", for: indexPath)
         configure(cell, forItemAt: indexPath)
         return cell
+    }
+
+    override func tableView(
+        _ tableView: UITableView,
+        didEndDisplaying cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        imageLoadTasks[indexPath]?.cancel()
     }
 
     // MARK: - Navigation
@@ -80,12 +105,45 @@ final class MenuTableViewController: UITableViewController {
     }
 
     func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
+//        let menuItem = menuItems[indexPath.row]
+//
+//        var content = cell.defaultContentConfiguration()
+//        content.text = menuItem.name
+//        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
+//        content.image = UIImage(systemName: "photo.on.rectangle")
+//        cell.contentConfiguration = content
+//
+//        Task {
+//            if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL) {
+//                if let currentIndexPath = self.tableView.indexPath(for: cell),
+//                   currentIndexPath == indexPath {
+//                    var content = cell.defaultContentConfiguration()
+//                    content.text = menuItem.name
+//                    content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
+//                    content.image = image
+//                    cell.contentConfiguration = content
+//                }
+//
+//            }
+//
+//        }
+
+        guard let cell = cell as? MenuItemCell else { return }
+
         let menuItem = menuItems[indexPath.row]
 
-        var content = cell.defaultContentConfiguration()
-        content.text = menuItem.name
-        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-        cell.contentConfiguration = content
+        cell.itemName = menuItem.name
+        cell.price = menuItem.price
+        cell.image = nil
 
+        imageLoadTasks[indexPath] = Task {
+            if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL) {
+                if let currentIndexPath = self.tableView.indexPath(for: cell),
+                currentIndexPath == indexPath {
+                    cell.image = image
+                }
+                }
+            imageLoadTasks[indexPath] = nil
+            }
+        }
     }
-}

@@ -11,8 +11,8 @@ final class OrderTableViewController: UITableViewController {
 
     // MARK: - Subviews
 
-
     var minutesToPrepareOrder = 0
+    var imageLoadTasks: [IndexPath: Task<Void, Never>] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,45 +33,44 @@ final class OrderTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(
+        in tableView: UITableView
+    ) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
         return MenuController.shared.order.menuItems.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Order", for: indexPath)
 
         configure(cell, forItemAt: indexPath)
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    override func tableView(
+        _ tableView: UITableView,
+        canEditRowAt indexPath: IndexPath
+    ) -> Bool {
         return true
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(
+        _ tableView: UITableView,
+        commit editingStyle: UITableViewCell.EditingStyle,
+        forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             MenuController.shared.order.menuItems.remove(at: indexPath.row)
         }
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     // MARK: - Navigation
 
@@ -87,13 +86,25 @@ final class OrderTableViewController: UITableViewController {
 
         let formattedTotal = orderTotal.formatted(.currency(code: "usd"))
 
-        let alertController = UIAlertController(title: "Confirm order", message: "Do you want to confirm your order with a total price \(formattedTotal)?", preferredStyle: .actionSheet)
+        let alertController = UIAlertController(
+            title: "Confirm order",
+            message:
+                "Do you want to confirm your order with a total price \(formattedTotal)?",
+            preferredStyle: .actionSheet)
 
-        alertController.addAction(UIAlertAction(title: "Submit", style: .default, handler: { _ in
+        alertController.addAction(
+            UIAlertAction(
+                title: "Submit",
+                style: .default,
+                handler: { _ in
             self.uploadOrder()
         }))
 
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(
+            UIAlertAction(
+                title: "Cancel",
+                style: .cancel,
+                handler: nil))
 
         present(alertController, animated: true, completion: nil)
     }
@@ -103,10 +114,22 @@ final class OrderTableViewController: UITableViewController {
     func configure(_ cell: UITableViewCell, forItemAt indexPath: IndexPath) {
         let menuItem = MenuController.shared.order.menuItems[indexPath.row]
 
-        var content = cell.defaultContentConfiguration()
-        content.text = menuItem.name
-        content.secondaryText = menuItem.price.formatted(.currency(code: "usd"))
-        cell.contentConfiguration = content
+        guard let cell = cell as? MenuItemCell else { return }
+
+        cell.itemName = menuItem.name
+        cell.price = menuItem.price
+        cell.image = nil
+
+        imageLoadTasks[indexPath] = Task {
+            if let image = try? await MenuController.shared.fetchImage(from: menuItem.imageURL) {
+                if
+                    let currentIndexPath = self.tableView.indexPath(for: cell),
+                    currentIndexPath == indexPath {
+                    cell.image = image
+                }
+            }
+            imageLoadTasks[indexPath] = nil
+        }
     }
 
     func uploadOrder() {
@@ -128,5 +151,11 @@ final class OrderTableViewController: UITableViewController {
         let alert = UIAlertController(title: title, message: error.localizedDescription, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+
+    @IBAction func unwindToOrderList(segue: UIStoryboardSegue ) {
+        if segue.identifier == "dismissConfirmation" {
+            MenuController.shared.order.menuItems.removeAll()
+        }
     }
 }

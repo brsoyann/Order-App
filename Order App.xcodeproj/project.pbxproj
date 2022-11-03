@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EB5841D4290D7A0400A77D48 /* OrderConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5841D3290D7A0400A77D48 /* OrderConfirmationViewController.swift */; };
+		EB5841D6290DA14300A77D48 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5841D5290DA14300A77D48 /* MenuItemCell.swift */; };
 		EBCF81062909A7F3008A4A42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF81052909A7F3008A4A42 /* AppDelegate.swift */; };
 		EBCF81082909A7F3008A4A42 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCF81072909A7F3008A4A42 /* SceneDelegate.swift */; };
 		EBCF810D2909A7F3008A4A42 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBCF810B2909A7F3008A4A42 /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		EB5841D3290D7A0400A77D48 /* OrderConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderConfirmationViewController.swift; sourceTree = "<group>"; };
+		EB5841D5290DA14300A77D48 /* MenuItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemCell.swift; sourceTree = "<group>"; };
 		EBCF81022909A7F3008A4A42 /* Order App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Order App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBCF81052909A7F3008A4A42 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EBCF81072909A7F3008A4A42 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				EBCF812F2909B095008A4A42 /* MenuController.swift */,
+				EB5841D5290DA14300A77D48 /* MenuItemCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 				EBCF81232909AB6F008A4A42 /* OrderTableViewController.swift in Sources */,
 				EBCF81062909A7F3008A4A42 /* AppDelegate.swift in Sources */,
 				EBCF81082909A7F3008A4A42 /* SceneDelegate.swift in Sources */,
+				EB5841D6290DA14300A77D48 /* MenuItemCell.swift in Sources */,
 				EB5841D4290D7A0400A77D48 /* OrderConfirmationViewController.swift in Sources */,
 				EBCF811F2909AB56008A4A42 /* CategoryTableViewController.swift in Sources */,
 			);
